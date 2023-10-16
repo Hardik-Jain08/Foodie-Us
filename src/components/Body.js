@@ -1,22 +1,26 @@
 import React from 'react'
 import Search from './Search';
 import RestaurantCard from './RestaurantCard';
-import ShimmerUI from './ShimmerUI';
+import { ShimmerCard } from './ShimmerUI';
 import useRestaurantListHook from '../utils/useRestaurantListHook';
+import { useState } from 'react';
+import FoodCarousel from './FoodCarousel';
 
 const Body = () => {
-    
-    const [listOfRestaurants, filteredRestaurants, searchDataFun, filterData] = useRestaurantListHook();
-    
+    const [page, setPage] = useState(0);
+    const [listOfRestaurants, filteredRestaurants, searchDataFun, filterData] = useRestaurantListHook(page);
     if (!listOfRestaurants.length || !filteredRestaurants) {
-        return <ShimmerUI />
+        return <ShimmerCard />
     }
     return (
         <div className='m-10 flex flex-col items-center'>
+            <div className='w-full'>
+                <FoodCarousel />
+            </div>
             <Search searchDataFun={searchDataFun} filterData={filterData} />
             <div className='flex flex-wrap justify-center'>
-                {filteredRestaurants.map((res, key) => {
-                    return <RestaurantCard key={res.info.id} res={res.info} />
+                {filteredRestaurants.map((res, index) => {
+                    return <RestaurantCard key={index} res={res.info} isLast={index===filteredRestaurants.length - 1} onIntersect={()=>{setPage(page=>page+1)}} />
                 })}
             </div>
         </div>

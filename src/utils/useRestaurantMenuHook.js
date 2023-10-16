@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
-import { swiggy_menu_api_URL } from './constants';
+import { FETCH_MENU_URL } from './constants';
+import { useParams } from 'react-router-dom';
 
-const useRestaurantMenuHook = (resId) => {
+const useRestaurantMenuHook = () => {
+    const { resId } = useParams();
     const restaurantStructure = {
         name: "",
         logo: "",
@@ -16,9 +18,10 @@ const useRestaurantMenuHook = (resId) => {
     const [restaurant, setRestaurant] = useState(restaurantStructure);
     useEffect(() => {
         fetchData();
+        window.scrollTo(0, 0);
     }, []);
     const fetchData = async () => {
-        const data = await fetch(swiggy_menu_api_URL + resId);
+        const data = await fetch(FETCH_MENU_URL + resId);
         const json = await data.json();
         const card = json?.data?.cards[0]?.card?.card?.info;
         const cuisineDetails = (json?.data?.cards[1]?.groupedCard?.cardGroupMap?.REGULAR?.cards) ? (json?.data?.cards[1]?.groupedCard?.cardGroupMap?.REGULAR?.cards) : (json?.data?.cards[2]?.groupedCard?.cardGroupMap?.REGULAR?.cards);

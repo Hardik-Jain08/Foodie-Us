@@ -1,21 +1,19 @@
 import { useState , useEffect } from 'react'
-import { swiggy_api_URL } from './constants';
+import { RES_API } from './constants';
 
-const useRestaurantListHook = (resId) => {
+const useRestaurantListHook = (page) => {
     const [listOfRestaurants, setListOfRestaurants] = useState([]);
     const [filteredRestaurants, setFilteredRestaurants] = useState([]);
     useEffect(() => {
+        // console.log("Data is fetched", page);
         fetchData();
-    }, []);
+    }, [page]);
 
     const fetchData = async () => {
-        const data1 = await fetch(swiggy_api_URL);
-        // const data2 = await fetch(swiggy_api_URL);
-        const json1 = await data1.json();
-        // const json2 = await data2.json();
-        // const arrayOfCards = { ...json1.data.cards, ...json2.data.cards };
-        const arrayOfCards = json1.data.cards;
-        // console.log(arrayOfCards);
+        const data = await fetch(RES_API);
+        const json = await data.json();
+        // console.log(json);
+        const arrayOfCards = json.data.cards;
         const restaurant_list = "restaurant_grid_listing";
 
         for (const cardObj of arrayOfCards) {

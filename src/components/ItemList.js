@@ -1,8 +1,13 @@
 import React from 'react'
 import { IMG_CDN_URL } from '../utils/constants';
+import { useDispatch } from 'react-redux';
+import { addItem } from '../utils/cartSlice';
 
-const ItemList = ({ item}) => {
-
+const ItemList = ({ item }) => {
+    const dispatch = useDispatch();
+    const handleFoodItems = (item) => {
+        dispatch(addItem(item));
+    };
     const {
         price,
         defaultPrice,
@@ -16,16 +21,16 @@ const ItemList = ({ item}) => {
                 <span className='font-bold'>
                     {name}
                 </span>
+                <span className='text-xs text-gray-500'>
+                    {description || "Serves 1"}
+                </span>
                 <span className='font-semibold'>
                     ₹{price /100 || defaultPrice/100}
                 </span>
-                <span className='text-xs text-gray-500'>
-                    {description}
-                </span>
             </div>
             <div className='relative'>
-                <img src={IMG_CDN_URL + imageId} alt="Dish" className='h-32 rounded-md' />
-                <button className='absolute left-[30%] -bottom-[10%] font-bold bg-green-600 text-white hover:text-white hover:bg-orange-600 rounded-md px-4 py-1'>Add</button>
+                <img src={IMG_CDN_URL + (imageId ?? "lmlrkfw06acl4qahhtxu")} alt="Dish" className='h-32 rounded-md' />
+                <button onClick={() => handleFoodItems(item)} className='absolute left-[30%] -bottom-[10%] font-bold bg-green-600 text-white hover:text-white hover:bg-orange-600 rounded-md px-4 py-1'>Add</button>
             </div>
         </div>
     )

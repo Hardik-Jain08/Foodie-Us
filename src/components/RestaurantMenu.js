@@ -1,24 +1,20 @@
 import { React, useState } from 'react'
 import useRestaurantMenuHook from '../utils/useRestaurantMenuHook'
-import { useParams } from 'react-router-dom'
-import { MENU_ITEM_TYPE_KEY } from '../utils/constants'
 import ItemCategory from './ItemCategory'
+import useCategories from '../utils/useCategories'
 
 const RestaurantMenu = () => {
-  const { resId } = useParams();
-  const restaurantData = useRestaurantMenuHook(resId);
+  const restaurantData = useRestaurantMenuHook();
   const {
+    id,
     name,
     cuisines,
     areaname,
-    deliverymsg,
     avgrating,
     totalratings,
     itemCards,
   } = restaurantData;
-  const categories = itemCards.filter((item) => {
-    return item?.card?.card?.["@type"] === MENU_ITEM_TYPE_KEY;
-  });
+  const categories = useCategories(itemCards);
   const [showIndex, setShowIndex] = useState(0);
   return (
     <>
@@ -47,7 +43,7 @@ const RestaurantMenu = () => {
           </div>
         </div>
         {categories.map((item, index) => {
-          return <ItemCategory item={item?.card?.card}
+          return <ItemCategory key={id+name+index} item={item?.card?.card}
             showlist={index === showIndex ? true : false}
             setShowIndex={()=>{ index === showIndex ? setShowIndex(null) : setShowIndex(index)}}
           ></ItemCategory>;

@@ -11,6 +11,7 @@ const ItemCategory = ({ item , showlist, setShowIndex}) => {
             </div>
             {showlist && item.itemCards.map((itemList, index) => {
                 return <ItemList
+                    key={index}
                     item={itemList}
                 />;
             })}
